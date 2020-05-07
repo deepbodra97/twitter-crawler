@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta content="initial-scale=1, minimum-scale=1, width=device-width" name="viewport">
+	<title>Search</title>
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&lang=en" rel="stylesheet">
+	<link href="https://www.google.com/work/search/css/search.min.css" rel="stylesheet">
+
+	<meta content="NOODP,NOYDIR" name="robots">
+</head>
+<style type="text/css">
+	body{
+		font-size: 18px !important;
+		font-family: 'Roboto', sans-serif;
+	}
+
+	.form {
+		text-align: center;
+		margin-top: 20px;
+	}
+
+	#f-query {
+		border-radius: 20px;
+		width: 450px;
+		height: 40px;
+	}
+
+	#q-bar-image{
+		display: inline;
+		position: absolute;
+		top: 10px;
+		right: 20px;
+		z-index: 10;
+	}
+
+	#color-coding-container{
+		text-align: center;
+	}
+
+	#tweets-container{
+		font-size: 16px;
+	}
+
+	h2 {
+	    width: 100%;
+	    text-align:center;
+	}
+
+	#res1 {
+		
+		color: #ff3300;
+	}
+
+	#res2 {
+		
+		color: #ff751a;  
+	}
+	#res3 {
+		
+		color: #0066ff;
+	}
+	#res4 {
+		
+		color:  #ffff00;
+	}
+	#res5 {
+		
+		color: #33cc33;
+	}
+
+	.alert{
+		margin-bottom: 0px;
+		text-align:left;
+
+	}
+
+	.alert-default{
+		background-color:lightgrey;
+	}
+
+	span{
+		display:inline-block !important;
+		width: 60px !important;
+		height: 40px !important;
+	}
+</style>
+<body>
+	<div class="form">
+		<form class="form-inline" method="GET" action="/search">
+		 	<div class="input-group">
+		    	<input name="q" type="text" class="form-control" id="f-query" placeholder="Search">
+		    	<div id="q-bar-image">
+		      		<i class="glyphicon glyphicon-search"></i>
+		    	</div>
+	  		</div>
+		</form>
+	</div>
+
+	<div class="container">
+		<div class="container" id="color-coding-container">
+			Color Coding<br>
+			<span class="label label-danger"><font size="4"><0.5</font></span>
+			<span class="label label-warning"><font size="4">0.5</font></span>
+			<span class="label label-default"><font size="4">=0</font></span>
+			<span class="label label-info"><font size="4">0</font></span>
+			<span class="label label-success"><font size="4">=0.5</font></span>
+		</div>
+		<br>
+		<h2 class="center">TWEETS</h2>
+		<div id="tweets-container">
+			{% for tweet in tweets %}
+				<div class="row alert
+				{% if tweet.score >= 0.5 %}
+					alert-success
+				{% elif tweet.score > 0 %}
+					alert-info
+				{% elif tweet.score == 0 %}
+					alert-default
+				{% elif tweet.score >= -0.5 %}
+					alert-warning
+				{% else %}
+					alert-danger
+				{%endif%}">
+					<strong>{{ tweet.by }}</strong><br>
+					<p>{{ tweet.tweet }}</p>
+					<p>Sentiment Score: {{ tweet.score|floatformat:2 }}</p>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+</body>
+</html>
